@@ -71,21 +71,21 @@ class Test_base_model(unittest.TestCase):
     def test_time(self):
         """Check the time if it is str."""
         b = BaseModel()
-        self.assertIsInstance(b.created_at, str)
+        self.assertIsInstance(b.created_at, datetime.datetime)
 
-    '''def test_time2(self):
+    def test_time2(self):
         """Test if time is in this form
         %Y-%m-%dT%H:%M:%S.%f
         """
-        pattern = r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{6}"
+        pattern = r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{6}"
         b = BaseModel()
-        self.assertRegex(str(b.created_at), pattern)'''
+        self.assertRegex(str(b.created_at), pattern)
 
     def test_time3(self):
         """Check the time if it is str."""
         b = BaseModel()
-        self.assertEqual(b.created_at,
-                         datetime.datetime.now())
+        self.assertAlmostEqual(b.created_at, datetime.datetime.now(),
+                               delta=datetime.timedelta(seconds=1))
 
     def test_updated_at(self):
         """
@@ -97,11 +97,10 @@ class Test_base_model(unittest.TestCase):
 
     def test_updated_at2(self):
         """Test if time is in this form
-        %Y-%m-%dT%H:%M:%S.%f
         """
-        pattern = r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{6}"
+        pattern = r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{6}"
         b = BaseModel()
-        self.assertRegex(b.updated_at, pattern)
+        self.assertRegex(str(b.updated_at), pattern)
 
     def test_str(self):
         """Check the str of the class."""
@@ -120,18 +119,18 @@ class Test_base_model(unittest.TestCase):
         b.save()
         self.assertNotEqual(b.created_at, b.updated_at)
 
-    '''def test_save2(self):
+    def test_save2(self):
         """Check the time of updated_at."""
         b = BaseModel()
         b.save()
-        self.assertAlmostEqual(b.updated_at,
-                                datetime.datetime.now())'''
+        self.assertAlmostEqual(b.updated_at, datetime.datetime.now(),
+                               delta=datetime.timedelta(seconds=1))
 
     def test_save3(self):
         """Test if updated_at is in this form
-        %Y-%m-%dT%H:%M:%S.%f
+        %Y-%m-%d %H:%M:%S.%f
         """
-        pattern = r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{6}"
+        pattern = r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{6}"
         b = BaseModel()
         b.save
         self.assertRegex(str(b.updated_at), pattern)
@@ -143,6 +142,56 @@ class Test_base_model(unittest.TestCase):
         b.save()
         second_updated_at = b.updated_at
         self.assertNotEqual(first_updated_at, second_updated_at)
+
+    def test_to_dict(self):
+        """Check the contents"""
+        b = BaseModel()
+        di = b.to_dict()
+        del di["__class__"]
+        self.assertCountEqual(b.__dict__.keys(), di.keys())
+
+    def test_to_dict2(self):
+        """Check if created_at is str"""
+        b = BaseModel()
+        self.assertIsInstance(b.to_dict()["created_at"], str)
+
+    def test_to_dict3(self):
+        """Check if updated_at is str"""
+        b = BaseModel()
+        self.assertIsInstance(b.to_dict()["updated_at"], str)
+
+    def test_to_dict4(self):
+        """Check if created_at is in form %Y-%m-%dT%H:%M:%S.%f"""
+        b = BaseModel()
+        pattern = r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{6}"
+        self.assertRegex(b.to_dict()["created_at"], pattern)
+
+    def test_to_dict5(self):
+        """Check if updated_at is in form %Y-%m-%dT%H:%M:%S.%f"""
+        b = BaseModel()
+        pattern = r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{6}"
+        self.assertRegex(b.to_dict()["updated_at"], pattern)
+
+    def test_to_dict6(self):
+        """Check if the return of to_dict() is dict"""
+        b = BaseModel()
+        self.assertIsInstance(b.to_dict(), dict)
+
+    def test_to_dict7(self):
+        """Check if the instance is of BaseModel."""
+        b = BaseModel()
+        self.assertIsInstance(b, BaseModel)
+
+    def test_to_dict8(self):
+        """Check if __class__ is exists."""
+        b = BaseModel()
+        self.assertIn("__class__", b.to_dict())
+
+    def test_to_dict9(self):
+        """Check the __class__'s value."""
+        b = BaseModel()
+        self.assertEqual(b.to_dict()["__class__"], b.__class__.__name__)
+
 
 if __name__ == "__main__":
     unittest.main()

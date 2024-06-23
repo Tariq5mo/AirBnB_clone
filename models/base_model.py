@@ -25,3 +25,14 @@ class BaseModel():
         with the current datetime.
         """
         self.updated_at = datetime.datetime.now()
+
+    def to_dict(self):
+        """
+        Returns a dictionary containing
+        all keys/values of __dict__of the instance.
+        """
+        di = self.__dict__.copy()
+        di["__class__"] = self.__class__.__name__
+        di["created_at"] = self.created_at.isoformat()
+        di["updated_at"] = self.updated_at.isoformat()
+        return di
