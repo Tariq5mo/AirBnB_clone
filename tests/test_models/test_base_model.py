@@ -192,6 +192,73 @@ class Test_base_model(unittest.TestCase):
         b = BaseModel()
         self.assertEqual(b.to_dict()["__class__"], b.__class__.__name__)
 
+    def test_to_kwargs(self):
+        """Check if kwargs is not empty."""
+        i = '56d43177-cc5f-4d6c-a0c1-e167f8c27337'
+        c = '2017-09-28T21:03:54.052298'
+        ba = 'BaseModel'
+        b = BaseModel(id=i, created_at=c, __class__=ba, my_number=89,
+                      updated_at='2017-09-28T21:03:54.052302',
+                      name='My_First_Model')
+        self.assertCountEqual(
+            b.to_dict(), {'id': i, 'created_at': c,
+                         '__class__': b.__class__.__name__, 'my_number': 89,
+                         'updated_at': '2017-09-28T21:03:54.052302',
+                         'name': 'My_First_Model'})
+
+    def test_to_kwargs2(self):
+        """Check if kwargs is not empty."""
+        i = '56d43177-cc5f-4d6c-a0c1-e167f8c27337'
+        c = '2017-09-28T21:03:54.052298'
+        ba = 'BaseModel'
+        b = BaseModel(id=i, created_at=c, __class__=ba, my_number=89,
+                      updated_at='2017-09-28T21:03:54.052302',
+                      name='My_First_Model')
+        self.assertCountEqual(
+            b.__dict__, {'id': i, 'created_at': c, 'my_number': 89,
+                         'updated_at': '2017-09-28T21:03:54.052302',
+                         'name': 'My_First_Model'})
+
+    def test_to_kwargs3(self):
+        """Check if kwargs is not empty."""
+        i = '56d43177-cc5f-4d6c-a0c1-e167f8c27337'
+        c = '2017-09-28T21:03:54.052298'
+        ba = 'BaseModel'
+        b = BaseModel(id=i, created_at=c, __class__=ba, my_number=89,
+                      updated_at='2017-09-28T21:03:54.052302',
+                      name='My_First_Model')
+        self.assertIsInstance(b, BaseModel)
+
+    def test_to_kwargs4(self):
+        """Check if kwargs is not empty."""
+        i = '56d43177-cc5f-4d6c-a0c1-e167f8c27337'
+        c = '2017-09-28T21:03:54.052298'
+        ba = 'BaseModel'
+        b = BaseModel(id=i, created_at=c, __class__=ba, my_number=89,
+                      updated_at='2017-09-28T21:03:54.052302',
+                      name='My_First_Model')
+        self.assertNotIn('__class__', b.__dict__)
+
+    def test_to_kwargs5(self):
+        """Check if created_at is datetime."""
+        i = '56d43177-cc5f-4d6c-a0c1-e167f8c27337'
+        c = '2017-09-28T21:03:54.052298'
+        ba = 'BaseModel'
+        b = BaseModel(id=i, created_at=c, __class__=ba, my_number=89,
+                      updated_at='2017-09-28T21:03:54.052302',
+                      name='My_First_Model')
+        self.assertIsInstance(b.created_at, datetime.datetime)
+
+    def test_to_kwargs6(self):
+        """Check if updated_at is datetime."""
+        i = '56d43177-cc5f-4d6c-a0c1-e167f8c27337'
+        c = '2017-09-28T21:03:54.052298'
+        ba = 'BaseModel'
+        b = BaseModel(id=i, created_at=c, __class__=ba, my_number=89,
+                      updated_at='2017-09-28T21:03:54.052302',
+                      name='My_First_Model')
+        self.assertIsInstance(b.updated_at, datetime.datetime)
+
 
 if __name__ == "__main__":
     unittest.main()
