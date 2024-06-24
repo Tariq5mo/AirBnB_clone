@@ -84,8 +84,9 @@ class Test_base_model(unittest.TestCase):
     def test_time3(self):
         """Check the time if it is str."""
         b = BaseModel()
-        self.assertAlmostEqual(b.created_at, datetime.datetime.now(),
-                               delta=datetime.timedelta(seconds=1))
+        self.assertAlmostEqual(
+            b.created_at, datetime.datetime.now(),
+            delta=datetime.timedelta(seconds=1))
 
     def test_updated_at(self):
         """
@@ -96,8 +97,7 @@ class Test_base_model(unittest.TestCase):
         self.assertEqual(b.created_at, b.updated_at)
 
     def test_updated_at2(self):
-        """Test if time is in this form
-        """
+        """Test if time is in this form"""
         pattern = r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{6}"
         b = BaseModel()
         self.assertRegex(str(b.updated_at), pattern)
@@ -123,8 +123,9 @@ class Test_base_model(unittest.TestCase):
         """Check the time of updated_at."""
         b = BaseModel()
         b.save()
-        self.assertAlmostEqual(b.updated_at, datetime.datetime.now(),
-                               delta=datetime.timedelta(seconds=1))
+        self.assertAlmostEqual(
+            b.updated_at, datetime.datetime.now(),
+            delta=datetime.timedelta(seconds=1))
 
     def test_save3(self):
         """Test if updated_at is in this form
@@ -194,69 +195,111 @@ class Test_base_model(unittest.TestCase):
 
     def test_to_kwargs(self):
         """Check if kwargs is not empty."""
-        i = '56d43177-cc5f-4d6c-a0c1-e167f8c27337'
-        c = '2017-09-28T21:03:54.052298'
-        ba = 'BaseModel'
-        b = BaseModel(id=i, created_at=c, __class__=ba, my_number=89,
-                      updated_at='2017-09-28T21:03:54.052302',
-                      name='My_First_Model')
+        i = "56d43177-cc5f-4d6c-a0c1-e167f8c27337"
+        c = "2017-09-28T21:03:54.052298"
+        ba = "BaseModel"
+        b = BaseModel(
+            id=i,
+            created_at=c,
+            __class__=ba,
+            my_number=89,
+            updated_at="2017-09-28T21:03:54.052302",
+            name="My_First_Model",
+        )
         self.assertCountEqual(
-            b.to_dict(), {'id': i, 'created_at': c,
-                         '__class__': b.__class__.__name__, 'my_number': 89,
-                         'updated_at': '2017-09-28T21:03:54.052302',
-                         'name': 'My_First_Model'})
+            b.to_dict(),
+            {
+                "id": i,
+                "created_at": c,
+                "__class__": b.__class__.__name__,
+                "my_number": 89,
+                "updated_at": "2017-09-28T21:03:54.052302",
+                "name": "My_First_Model",
+            },
+        )
 
     def test_to_kwargs2(self):
         """Check if kwargs is not empty."""
-        i = '56d43177-cc5f-4d6c-a0c1-e167f8c27337'
-        c = '2017-09-28T21:03:54.052298'
-        ba = 'BaseModel'
-        b = BaseModel(id=i, created_at=c, __class__=ba, my_number=89,
-                      updated_at='2017-09-28T21:03:54.052302',
-                      name='My_First_Model')
+        i = "56d43177-cc5f-4d6c-a0c1-e167f8c27337"
+        c = "2017-09-28T21:03:54.052298"
+        ba = "BaseModel"
+        b = BaseModel(
+            id=i,
+            created_at=c,
+            __class__=ba,
+            my_number=89,
+            updated_at="2017-09-28T21:03:54.052302",
+            name="My_First_Model",
+        )
         self.assertCountEqual(
-            b.__dict__, {'id': i, 'created_at': c, 'my_number': 89,
-                         'updated_at': '2017-09-28T21:03:54.052302',
-                         'name': 'My_First_Model'})
+            b.__dict__,
+            {
+                "id": i,
+                "created_at": c,
+                "my_number": 89,
+                "updated_at": "2017-09-28T21:03:54.052302",
+                "name": "My_First_Model",
+            },
+        )
 
     def test_to_kwargs3(self):
         """Check if kwargs is not empty."""
-        i = '56d43177-cc5f-4d6c-a0c1-e167f8c27337'
-        c = '2017-09-28T21:03:54.052298'
-        ba = 'BaseModel'
-        b = BaseModel(id=i, created_at=c, __class__=ba, my_number=89,
-                      updated_at='2017-09-28T21:03:54.052302',
-                      name='My_First_Model')
+        i = "56d43177-cc5f-4d6c-a0c1-e167f8c27337"
+        c = "2017-09-28T21:03:54.052298"
+        ba = "BaseModel"
+        b = BaseModel(
+            id=i,
+            created_at=c,
+            __class__=ba,
+            my_number=89,
+            updated_at="2017-09-28T21:03:54.052302",
+            name="My_First_Model",
+        )
         self.assertIsInstance(b, BaseModel)
 
     def test_to_kwargs4(self):
         """Check if kwargs is not empty."""
-        i = '56d43177-cc5f-4d6c-a0c1-e167f8c27337'
-        c = '2017-09-28T21:03:54.052298'
-        ba = 'BaseModel'
-        b = BaseModel(id=i, created_at=c, __class__=ba, my_number=89,
-                      updated_at='2017-09-28T21:03:54.052302',
-                      name='My_First_Model')
-        self.assertNotIn('__class__', b.__dict__)
+        i = "56d43177-cc5f-4d6c-a0c1-e167f8c27337"
+        c = "2017-09-28T21:03:54.052298"
+        ba = "BaseModel"
+        b = BaseModel(
+            id=i,
+            created_at=c,
+            __class__=ba,
+            my_number=89,
+            updated_at="2017-09-28T21:03:54.052302",
+            name="My_First_Model",
+        )
+        self.assertNotIn("__class__", b.__dict__)
 
     def test_to_kwargs5(self):
         """Check if created_at is datetime."""
-        i = '56d43177-cc5f-4d6c-a0c1-e167f8c27337'
-        c = '2017-09-28T21:03:54.052298'
-        ba = 'BaseModel'
-        b = BaseModel(id=i, created_at=c, __class__=ba, my_number=89,
-                      updated_at='2017-09-28T21:03:54.052302',
-                      name='My_First_Model')
+        i = "56d43177-cc5f-4d6c-a0c1-e167f8c27337"
+        c = "2017-09-28T21:03:54.052298"
+        ba = "BaseModel"
+        b = BaseModel(
+            id=i,
+            created_at=c,
+            __class__=ba,
+            my_number=89,
+            updated_at="2017-09-28T21:03:54.052302",
+            name="My_First_Model",
+        )
         self.assertIsInstance(b.created_at, datetime.datetime)
 
     def test_to_kwargs6(self):
         """Check if updated_at is datetime."""
-        i = '56d43177-cc5f-4d6c-a0c1-e167f8c27337'
-        c = '2017-09-28T21:03:54.052298'
-        ba = 'BaseModel'
-        b = BaseModel(id=i, created_at=c, __class__=ba, my_number=89,
-                      updated_at='2017-09-28T21:03:54.052302',
-                      name='My_First_Model')
+        i = "56d43177-cc5f-4d6c-a0c1-e167f8c27337"
+        c = "2017-09-28T21:03:54.052298"
+        ba = "BaseModel"
+        b = BaseModel(
+            id=i,
+            created_at=c,
+            __class__=ba,
+            my_number=89,
+            updated_at="2017-09-28T21:03:54.052302",
+            name="My_First_Model",
+        )
         self.assertIsInstance(b.updated_at, datetime.datetime)
 
 
