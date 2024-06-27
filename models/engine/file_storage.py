@@ -41,7 +41,6 @@ class FileStorage():
                         classs = eval(classname)
                         instan = classs(**value)
                         di[key] = instan
-                        print("Error")
                     FileStorage.__objects = di
             except Exception:
                 pass
