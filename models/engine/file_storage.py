@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """Module for FileStorage class."""
 import json
+import os
+from models.base_model import BaseModel
 
 
 class FileStorage():
@@ -13,22 +15,33 @@ class FileStorage():
 
     def all(self):
         """Returns the dictionary __objects."""
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
         key = f"{obj.__class__.__name__}.{obj.id}"
-        self.__objects[key] = obj.to_dict()
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """Serializes __objects to the JSON file."""
-        with open(self.__file_path, 'w', encoding='utf-8') as f:
-            json.dump(self.__objects, f, default=str)
+        objs = {}
+        for key in FileStorage.__objects.keys():
+            objs[key] = FileStorage.__objects[key].to_dict()
+        with open(FileStorage.__file_path, 'w', encoding='utf-8') as f:
+            json.dump(objs, f, default=str)
 
     def reload(self):
         """Deserializes the JSON file to __objects ."""
-        try:
-            with open(self.__file_path, 'r', encoding='utf-8') as f:
-                self.__objects = json.load(f)
-        except Exception:
-            pass
+        if os.path.isfile(FileStorage.__file_path):
+            try:
+                with open(FileStorage.__file_path, 'r', encoding='utf-8') as f:
+                    di = json.load(f)
+                    for key, value in di.items():
+                        classname = di[key]["__class__"]
+                        classs = eval(classname)
+                        instan = classs(**value)
+                        di[key] = instan
+                        print("Error")
+                    FileStorage.__objects = di
+            except Exception:
+                pass
