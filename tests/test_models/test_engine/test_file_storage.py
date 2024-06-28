@@ -8,6 +8,9 @@ import os.path
 class Test_FileStorage(unittest.TestCase):
     """Test class for FileStorage."""
 
+    def tearDown(self):
+        models.FileStorage._FileStorage__objects = {}
+
     def test_file_path(self):
         """Test the file path if it's str."""
         sto = models.storage
@@ -35,7 +38,7 @@ class Test_FileStorage(unittest.TestCase):
         """Check the return value of all() method."""
         self.assertIsInstance(models.storage.all(), dict)
 
-    def test_new(self):
+    def test_aanew(self):
         """Check the content of __objects."""
         b = BaseModel()
         models.storage.new(b)
@@ -52,6 +55,10 @@ class Test_FileStorage(unittest.TestCase):
         """Check the reload method."""
         models.storage.reload()
         self.assertIsInstance(models.storage._FileStorage__objects, dict)
+
+    def test_all2(self):
+        '''Check if __objects is empty dict.'''
+        self.assertEqual(models.storage.all(), {})
 
 
 if __name__ == "__main__":
