@@ -7,6 +7,9 @@ import datetime
 class Test_base_model(unittest.TestCase):
     """Test class"""
 
+    """def tearDown(self):
+        models.storage._FileStorage__objects = {}"""
+
     def test_id_str(self):
         """Test if id is str."""
         b = BaseModel()
