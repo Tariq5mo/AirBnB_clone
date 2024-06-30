@@ -21,7 +21,7 @@ class HBNBCommand(cmd.Cmd):
         """Check if class name is exist.."""
         cls_list = ["BaseModel", "User", "State", "City",
                     "Amenity", "Place", "Review"]
-        if args[0] in cls_list:
+        if cls in cls_list:
                 return True
         return False
 
