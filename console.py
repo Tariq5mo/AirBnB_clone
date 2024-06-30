@@ -2,6 +2,11 @@
 """Module for the entry point of the command interpreter."""
 import cmd
 from models.base_model import BaseModel
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models.user import User
 import models
 import json
@@ -41,7 +46,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         args = line.split()
-        if args[0] == "BaseModel" or args[0] == "User":
+        cls_list = ["BaseModel", "User", "State", "City",
+                    "Amenity", "Place", "Review"]
+        if args[0] in cls_list:
             classs = eval(args[0])
             instance = classs()
             instance.save()
@@ -114,10 +121,10 @@ class HBNBCommand(cmd.Cmd):
             print(li)
 
     def do_update(self, line):
-        '''
+        """
         Updates an instance based on the class name and id
         by adding or updating attribute.
-        '''
+        """
         di = models.FileStorage._FileStorage__objects
         if line == "":
             print("** class name missing **")
