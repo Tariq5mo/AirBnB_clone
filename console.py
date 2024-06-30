@@ -2,6 +2,7 @@
 """Module for the entry point of the command interpreter."""
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 import models
 import json
 
@@ -40,7 +41,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         args = line.split()
-        if args[0] == "BaseModel":
+        if args[0] == "BaseModel" or args[0] == "User":
             classs = eval(args[0])
             instance = classs()
             instance.save()
