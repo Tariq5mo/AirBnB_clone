@@ -19,9 +19,8 @@ class HBNBCommand(cmd.Cmd):
 
     def check(self, cls=""):
         """Check if class name is exist.."""
-        cls_list = ["BaseModel", "User", "State", "City",
-                    "Amenity", "Place", "Review"]
-        if args[0] in cls_list:
+        for key in models.FileStorage._FileStorage__objects:
+            if cls in key:
                 return True
         return False
 
