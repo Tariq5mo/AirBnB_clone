@@ -3,12 +3,20 @@
 import cmd
 from models.base_model import BaseModel
 import models
+import json
 
 
 class HBNBCommand(cmd.Cmd):
     """the entry point of the command interpreter."""
 
     prompt = "(hbnb) "
+
+    def check(self, cls=""):
+        """Check if class name is exist.."""
+        for key in models.FileStorage._FileStorage__objects:
+            if cls in key:
+                return True
+        return False
 
     def do_EOF(self, line):
         """Exit the program."""
@@ -46,7 +54,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         args = line.split()
-        if args[0] != "BaseModel":
+        if self.check(args[0]) is not True:
             print("** class doesn't exist **")
             return
         if len(args) < 2:
@@ -61,12 +69,12 @@ class HBNBCommand(cmd.Cmd):
             print(obj)
 
     def do_destroy(self, line):
-        """Prints the string representation of an instance."""
+        """Deletes an instance based on the class name and id."""
         if line == "":
             print("** class name missing **")
             return
         args = line.split()
-        if args[0] != "BaseModel":
+        if self.check(args[0]) is not True:
             print("** class doesn't exist **")
             return
         if len(args) < 2:
@@ -80,6 +88,59 @@ class HBNBCommand(cmd.Cmd):
             del models.FileStorage._FileStorage__objects[key]
             models.FileStorage.save(self)
 
+    def do_all(self, line):
+        """
+        Prints all string representation of all instances
+        based or not on the class name.
+        """
+        li = []
+        args = line.split()
+        dic = models.FileStorage._FileStorage__objects
+        if line != "" and args[0] != "":
+            if self.check(args[0]) is not True:
+                print("** class doesn't exist **")
+                return
+            cls = args[0]
+            for key in dic:
+                if cls in key:
+                    obj = dic[key]
+                    li.append(obj.__str__())
+            print(li)
+        else:
+            for key in dic:
+                obj = dic[key]
+                li.append(obj.__str__())
+            print(li)
 
-if __name__ == '__main__':
+    def do_update(self, line):
+        '''
+        Updates an instance based on the class name and id
+        by adding or updating attribute.
+        '''
+        di = models.FileStorage._FileStorage__objects
+        if line == "":
+            print("** class name missing **")
+            return
+        args = line.split()
+        if self.check(args[0]) is not True:
+            print("** class doesn't exist **")
+            return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        key = f"{args[0]}.{args[1]}"
+        if key not in models.FileStorage._FileStorage__objects:
+            print("** no instance found **")
+            return
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+        if len(args) < 4:
+            print("** value missing **")
+            return
+        obj = di[key]
+        setattr(obj, args[2], json.loads(args[3]))
+
+
+if __name__ == "__main__":
     HBNBCommand().cmdloop()
