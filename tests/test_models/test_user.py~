@@ -1,0 +1,17 @@
+import unittest
+from models.base_model import BaseModel
+from models.user import User
+import models
+
+
+class Test_base_model(unittest.TestCase):
+    """Test class"""
+
+    def test_email(self):
+        """check if email is empty."""
+        u = User()
+        assertEqual(User.email, "")
+
+
+if __name__ == "__main__":
+    unittest.main()
